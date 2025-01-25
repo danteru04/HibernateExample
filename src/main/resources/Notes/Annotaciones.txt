@@ -1,0 +1,84 @@
+Antes que nada, si estas aqui después de mucho tiempo, este es un ejemplo sencillo de como usar hibernate
+estoy siguiendo el tutorial: https://www.youtube.com/watch?v=JR7-EdxDSf0&t=1549s&ab_channel=Telusko para aprender
+La configuración inicial de hibernate se encuentra en hibernate.cfg.xml en resources
+yo la tuve que crear pero aqui se especifica la base de datos y el comportamiento de hibernate
+En la clase Hibernate Transactions está el código que a mi me sirvió.
+En main está comentado un poco del código que se ve en el tutorial, fuera de ahi, se respeta el codigo
+Hibernate sigue el estandar JPA, se configura hibernate dentro del pom.xml de maven
+
+
+configuration debe tener:
+<property name="hibernate.connection.driver_class,url,username,password">
+<property name="hibernate.dialect">
+<property name="hnm2ddl.auto">create o update
+
+save() es usado para guardar la clase en una tabla, para esto se necesita un objeto de transaction y hacer un commit de
+las transacciones, así mismo se necesita una sessión, creada a partir de sessionFactory, que a su vez es creada por Configuration.configure
+vease Hibernate transactions
+
+Algunas de las anotaciones de Hibernate
+@Entity --> se debe poner antes de una clase, este indica a hibernate que esta será la tabla de la clase
+@Table(name="") --> indica el nombre específico de la tabla, de otra forma se toma el nombre de la clase en plural,
+    se puede hacer lo mismo ponendo (name = "") después de @Entity pero esto también cambia el nombre del entity, no solo de la tabla
+@ID --> Indica a la tabla cual será el campo identificador, se coloca arriba de la variable, es necesario al igual que @Entity
+@GeneratedValue --> se pone debajo de ID, este incrementa automaticamente el id
+@Column(name = "") --> el nombre de la columna de esta variable de la entidad se cambia en la tabla
+@Transient --> indica que no queremos almacenar la variable en la tabla como campo o columna
+@Embeddable --> Guardar una instancia o un objeto como parametro de otra tabla,
+@OneToOne --> Indica una relación de uno a uno, se coloca arriba de un objeto que también sea una entidad
+
+
+One To Many o Many To One ejemplo :
+@OneToMany --> Indica una relación de uno a muchos, se coloca arriba de un List <Class> de tu objeto que también es una entidad. se crea una nueva tabla.
+@ManyToOne --> Una alternativa que no crea una nueva tabla es poner dentro de la clase many un objeto de la clase one, pero se debe poner @OneToMany(mappedBy:"stud")
+
+@Entity
+public class Laptop{
+@Id
+private int lid;
+private String lname;
+@ManyToOne
+private Student stud;
+}
+
+@Entity
+public class Student{
+@Id
+private int rollno;
+private String name;
+private int marks;
+@OneToMany(mappedBy:"stud")
+private List<Laptop> laptop;
+}
+
+ManyToMany
+@ManyToMany --> Indica una relación de muchos a muchos se pone arriba de ambos y deben ser una lista del objeto relacionado,
+    Una alternativa que no crea una nueva tabla es poner dentro de una clase @ManyToMany(mappedBy:"stud")
+
+@Entity
+public class Laptop{
+@Id
+private int lid;
+private String lname;
+@ManyToMany
+private List<Student> stud;
+}
+
+@Entity
+public class Student{
+@Id
+private int rollno;
+private String name;
+private int marks;
+@ManyToMany(mappedBy:"stud")
+private List<Laptop> laptop;
+}
+
+create sobreescribe los datos de la tabla, para agregar datos en esta usamos update
+
+save es usado para guardar
+para recuperar datos usamos
+session.get(NombredeClase.Class, ID del registro);
+
+
+

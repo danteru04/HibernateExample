@@ -1,0 +1,13 @@
+Para hacer fetching se necesita una session de build factory
+y hacemos una transaction con session.get(clase.class, id que queremos)
+
+existen también dos tipos de fetch que podemos hacer:
+LAZY e EAGER
+
+El default de un session.get es lazy ya que las clases embedded o foraneas no las obtiene
+es decir, si yo tengo una relacion alien - laptop donde un alien tiene muchas laptops y una laptop tiene un alien
+al realizar session.get, se hará un select de los atributos de alien, mas no se obtendrá el List<Laptop> de laptop
+esto es, si no se recupera especificamente, asignadolo a un objeto o imprimiendolo
+
+Esto lo hacemos en el
+@OneToMany(fetch=FecthType.EAGER), por default está en LAZY

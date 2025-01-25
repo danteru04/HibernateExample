@@ -1,0 +1,25 @@
+Sirve en una sesión, cuando un usuario quiere rescatar datos, hibernate, si ya los había rescatado,
+los reenvia. Diferentes sesiones tienen diferentes cache
+
+conocido como first level cache, lo envia hibernate
+
+second level cache son datos que uno configura para estar disponibles, se puede usar:
+    ehcache
+    os
+    swarm
+    usaremos ehcache
+
+1- configuramos pom.xml para descargar la liberia ehcache
+2- tambien configuramos el archivo dat de hibernate-ehcache.dat
+3- se tiene que activar en el hibernate.cfg.xml y especificar el proveedor ehcache
+4- no todas las entidades son caheables, para esto esta la anotacion @Cacheable y @Cache
+
+@Cacheable --> especifica que una entidad es elegible para cache
+@Cache --> configurar la estrategia de cache
+
+
+Configurar Cache de Segundo Nivel
+especificamos las dependencias de ehcache y hibernate-ehcache en el pom.xml, estas se encuentran en el
+repositorio de maven
+dentro de hibernate.cfg.xml ponemos lo siguiente que por defaul esta en false:
+    <property name="hibernate.cache.use_second_level_cache">true</property>
