@@ -1,0 +1,24 @@
+JPA es la especificación para que la persistencia de clases funcione en cualquier orm o sin orm
+para hacer aplicaciones que funcionen con JPA ponemos en nuestro pon.xml el orm y el driver de jdbc
+en este caso hibernate y mysql connector
+
+primero se configura el persistence.xml
+aqui dentro le damos un nombre al persistence unit y las propiedades de tu base de datos
+
+para realizar una conexión con jpa usamos:
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu"); -> aqui se especifica el persistence unit
+            EntityMmanager em = emf.createEntityManager();
+
+para encontrar una instancia del objeto que queremos usamos
+            Alien a = em.find(Alien.class, 3);           donde 3 es el id
+
+Antes de esto se tiene que indicar que la clase alien es una entidad y su columna id
+            ahora podemos imprimir y recuperar los datos de la base de datos
+
+Para guardar datos en la base de datos usamos em.persist(a); sin embargo los cambios no se ven en la base de datos
+todavía, para cambiar o actualizar datos de una base de datos se usa algo llamado transaction, empezamos una transaction tal que
+            em.getTransaction().begin();
+            em.persist(a);
+            em.getTransactio().commit();
+
+Ahora los datos se encuentran en la bd

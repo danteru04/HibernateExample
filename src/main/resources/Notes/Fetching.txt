@@ -10,4 +10,12 @@ al realizar session.get, se hará un select de los atributos de alien, mas no se
 esto es, si no se recupera especificamente, asignadolo a un objeto o imprimiendolo
 
 Esto lo hacemos en el
-@OneToMany(fetch=FecthType.EAGER), por default está en LAZY
+@OneToMany(fetch=FetchType.EAGER), por default está en LAZY
+
+
+Diferencia entre get y load
+get se puede decir que es eager, mientras que load es lazy, esto quiere decir que cuando uno corre get se recuperan los
+datos de forma inmediata, cuando no encuentra un dato y se trata de acceder a este la aplicación da error,
+load, por otro lado, sirve como proxy del objeto guardado en la base de datos, este no hace la consulta a la base de
+datos sino hasta que los valores dentro son referenciados, esto es util por ejemplo cuando los valores de un dato
+dependen de otros.

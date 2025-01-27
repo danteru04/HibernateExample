@@ -1,0 +1,29 @@
+Existen distintos estados en los que los datos se encuentran en hibernate que describen la relación que
+los datos de un objeto tienen con la base de datos
+
+Transient
+esto significa que los datos todavía mo se encuentran en la base de datos, por ejemplo
+al crear una nueva laptop
+            Laptop laptop = new Laptop();
+            laptop.setLid(51);
+            laptop.setBrand("Sony");
+            laptop.setPrice("700");
+Como se puede analizar, laptop todavía no se encuentra en la base de datos, por lo que en el contexto de
+hibernate todavía no existe y es del tipo transient, para que esté en la base de datos hacemos save() o persist()
+
+Persistent
+En este estado los datos persisten en la base de datos y son actualizados automáticamente ya que son persistentes,
+uno creeria que al revisar la base de datos el ultimo precio guardado es 700, sin embargo en la base de datos aparecerá
+650, ya que los datos de laptops se actualizan automáticamente
+            session.save(laptop);
+            laptop.setPrice(650);
+
+Detach
+Esto significa que el objeto no será persistente, y si hacemos un cambio a un dato no se actualizará automaticamente
+Esto es util cuando queremos modificar un dato del objeto pero no queremos que se guarde el cambio dentro de la bd
+Para ignorar los cambios que hacemos en un objeto persistente hacemos después del commit
+            session.detach(laptop);
+            laptop.setPrice(600);
+
+Remove
+Esto elimina ese objeto de la base de datos

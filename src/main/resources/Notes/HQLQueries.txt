@@ -1,0 +1,55 @@
+HQL es el lenguaje de Queries de Hibernate, este se encarga de  hacer consultas a la base de datos mediante
+
+Query query = session.createQuery("consulta en hql");
+q.list();
+
+select * from student = from Student;   no se pone el select * y la tabla es el nombre de la clase
+podemos hacer where clauses después tal que
+podemos guardar la lista en una lista
+
+Query query = session.createQuery("from Student where marks > 70");
+List<Student> students = q.list();
+
+for(Student s : students){
+
+}
+
+se puede elegir un unico resultado con
+(Student)q.uniqueResult();
+
+podemos hacer algo como
+Query query = session.createQuery("select rollno,name,marks from Student where rollno=?"
+
+al especificar las columnas no podemos poner el resultado dentro de una lista de Student
+ya que nos devuelve un objeto de esas columnas por eso ponemos
+
+Object[] students = (Object[]) q.uniqueResult();
+
+Para recuperar todos los resultados o varios resultados por columnas usas
+
+Query query = session.createQuery("select rollno,name,marks from Student"
+List<Object[]> students = (List<Object[]>) q.uniqueResult();
+
+se puede hacer formateo de Strings dentro de las clausulas con
+"select sum(marks) from Student s where s.marks > :b";
+q.setParameter("b",b);
+
+
+
+NativeQuery
+para correr queries de SQL en vez de HQL usamos:
+SQLQuery query = session.createSQLQuery("select * from sudent where marks>60)");
+query.addEntity(Student.class);
+List<Student> students = query.list();
+
+addEntity especifica el tipo de valor que estás obteniendo, lo que no funcionará al recuperar solo columnas especificas
+para esto lo transformamos en un diccionario o map con:
+
+SQLQuery query = session.createSQLQuery("select name,marks from student where marks>60");
+query.setResultTransfomer(Criteria.ALIAS_TO_ENTITY_MAP);
+List students = query.list();
+
+for(Object o : students){
+    Map m = (Map)o;
+    System.out.println(m.get("name") + " : " + m.get("marks") );
+}
